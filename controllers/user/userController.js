@@ -1,11 +1,3 @@
-// const pageNotFound = async (req,res) => {
-//     try {
-//         res.render("page-404")
-//     }catch (error) {
-//         res.redirect("/pageNotFound")
-//     }
-// };
-
 const { generateKey } = require("crypto");
 const User = require("../../models/userSchema");
 const env = require("dotenv").config();
@@ -13,14 +5,22 @@ const nodemailer = require("nodemailer");
 const bcrypt =  require("bcrypt");
 
 
+
 const loadHomepage = async (req,res) => {
     try{
-        return res.render("home");
+        const user = req.session.user;
+        if(user){
+            const userData =  await User.findOne({_id:user._id});
+            res.render("home",{user:userData});
+        }else{
+            return res.render("home",);
+        }
+        
     }catch(error){
     console.log("Home page not loading", error);
-    res.status(500).send("Server error")
+    res.status(500).send("Server error");
     }   
- }
+ };
 
 
 const loadSignup = async (req,res)=>{
@@ -167,6 +167,22 @@ const resendOtp = async (req,res)=>{
     }
 }
 
+
+const loadLogin = async (req,res)=>{
+    try {
+        if(!req.session.user){
+            return res.render("login")
+        }else{
+            res.redirect("/")
+        }      
+    } catch (error) {
+        res.redirect("/pageNotFound")
+    }
+}
+
+
+
+
  module.exports = {
     loadHomepage,
     loadSignup,
@@ -174,6 +190,5 @@ const resendOtp = async (req,res)=>{
     signup,
     verifyOtp,
     resendOtp,
-
-    //pageNotFound,
- }
+    loadLogin,
+ };

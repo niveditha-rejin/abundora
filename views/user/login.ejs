@@ -1,0 +1,67 @@
+
+<%-include("../../views/partials/user/header")%>
+
+
+	<!-- My Account Area -->
+	<div class="my-account-area">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="my-account-title">
+						<h2>Login or Create an Account</h2>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6 col-sm-12">
+					<div class="new-customers customer">
+						<div class="customer-inner">
+							<div class="user-title">
+								<h2><i class="fa fa-file"></i>New Customers</h2>
+							</div>
+							<div class="user-content">
+								<p>By creating an account with our store, you will be able to move through the checkout
+									process faster, store multiple shipping addresses, view and track your orders in
+									your account and more.</p>
+							</div>
+						</div>
+						<div class="user-bottom fix">
+							<button class="btn" type="button">Create an Account</button>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 col-sm-12">
+					<div class="resestered-customers customer">
+						<div class="customer-inner">
+							<div class="user-title">
+								<h2><i class="fa fa-file-text"></i>Registered Customers</h2>
+							</div>
+							<div class="user-content">
+								<p>If you have an account with us, please log in.</p>
+							</div>
+							<div class="account-form">
+								<form class="form-horizontal product-form" action="#">
+									<div class="form-goroup">
+										<label>Email Address <sup>*</sup></label>
+										<input type="text" required="required" class="form-control">
+									</div>
+									<div class="form-goroup">
+										<label>Password <sup>*</sup></label>
+										<input type="password" required="required" class="form-control">
+									</div>
+								</form>
+							</div>
+							<p class="reauired-fields floatright"><sup>*</sup> Required Fields</p>
+						</div>
+						<div class="user-bottom fix">
+							<a href="#">Forgot Your Password?</a>
+							<button class="btn" type="button">login</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div><!-- End My Account Area -->
+	
+    <%-include("../../views/partials/user/footer")%>
+
