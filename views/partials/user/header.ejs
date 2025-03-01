@@ -60,6 +60,41 @@
 	<!-- modernizr JS
 		============================================ -->
 	<script src="js/vendor/modernizr-2.8.3.min.js"></script>
+
+<style>
+	.dropdown {
+		position: relative;
+		display:inline-block;
+	}
+	.dropdown-content {
+		display: none;
+		position: absolute;
+		background-color: white;
+		min-width: 150px;
+		box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+		z-index:1000;
+		right:0;
+	}
+	.dropdown-content a {
+		color: black;
+		padding: 12px 16px;
+		text-decoration: none;
+		display: block;
+		width: 100%;
+	}
+	.dropdown-content a:hover {
+		background-color: #f1f1f1;
+	}
+	.dropdown:hover .dropdown-content {
+		display: block;
+	}
+	.header {
+		position: relative;
+		z-index: 500;
+	}
+</style>
+
+
 </head>
 
 <body>
@@ -67,6 +102,7 @@
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
+		
 	<!-- Header Area -->
 	<div class="header-area">
 		<!-- Header top bar -->
@@ -74,57 +110,44 @@
 			<div class="container">
 				<div class="header-top-inner">
 					<div class="row align-items-lg-center">
-						<div class="col-lg-8 col-sm-12">
+						<div class="col-lg-6 col-sm-12">
 							<div class="header-top-left">
 								<div class="phone">
-									<label>Call us:</label> (+88) 01737803547
+									<label>Call us:</label> (+91) 9995475643
 								</div>
 								<div class="e-mail">
-									<label>Email:</label> admin@bootexperts.com
+									<label>Email:</label> abundora@gmail.com
 								</div>
 								<!-- Header Link Area -->
 								<div class="header-link-area">
 									<div class="header-link">
-										<p class="hidden-xs">Language: </p>
+										<% if (locals.user) { %>
 										<ul>
-											<li><a href="#">English <span class="fa fa-angle-down"></span></a>
-												<ul>
-													<li><a href="#">English 1</a></li>
-													<li><a href="#">English 2</a></li>
-													<li><a href="#">English 3</a></li>
-													<li><a href="#">English 4</a></li>
-													<li><a href="#">English 5</a></li>
-												</ul>
+											<li class="dropdown">
+												<a href="#"><%=locals.user.name%> <span class="fa fa-angle-down"></span></a>
+												<div class="dropdown-content">
+													
+													<a href="/myprofile">Profile </a>
+													<a href="/orders">My Orders</a>
+													<a href="/cart">Cart</a>
+													<a href="wishlist">wishlist</a>
+													<a href="/logout">Logout</a>
+												</div>
 											</li>
 										</ul>
+										<% } else { %>
 									</div>
 									<div class="header-link">
-										<p class="hidden-md hidden-sm hidden-xs">Currency: </p>
-										<ul>
-											<li class="hidden-md hidden-sm hidden-xs"><a href="#">USD <span
-														class="fa fa-angle-down"></span></a>
-												<ul>
-													<li><a href="#">EUR</a></li>
-													<li><a href="#">USD</a></li>
-												</ul>
-											</li>
-											<li><a href="#">Account <span class="fa fa-angle-down"></span></a>
-												<ul>
-													<li><a href="my-account.html">My Account</a></li>
-													<li><a href="wishlist.html">My Wishlist</a></li>
-													<li><a href="cart.html">My Cart</a></li>
-													<li><a href="checkout.html">Checkout</a></li>
-													<li><a href="blog.html">Blog</a></li>
-													<li><a href="/login">Login</a></li>
-													<li><a href="/signup">Sign Up</a></li>
-												</ul>
-											</li>
-										</ul>
-									</div>
+										<a class="hidden-md hidden-sm hidden-xs" href="/signup" style="color: black;">Sign Up </a>
+										</div>
+										<div class="header-link">
+											<a class="hidden-md hidden-sm hidden-xs" href="/login" style="color: black;">Log in </a>
+											<% } %></div>
+											
 								</div><!-- End Header Link Area -->
 							</div>
 						</div>
-						<div class="col-lg-4 col-sm-12">
+						<div class="col-lg-6 col-sm-12">
 							<div class="header-top-right">
 								<!-- Header Social Icon -->
 								<div class="header-social-icon">
@@ -141,6 +164,10 @@
 				</div>
 			</div>
 		</div><!-- End Header Top bar -->
+
+
+
+
 		<!-- Header bottom -->
 		<div class="header-bottom">
 			<div class="container">
@@ -222,6 +249,9 @@
 		</div>
 		<!-- End Header bottom -->
 	</div><!-- End Header Area -->
+
+
+
 	<div class="main-menu-area">
 		<div class="container">
 			<div class="row">

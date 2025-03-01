@@ -55,6 +55,11 @@
 									<input type="password" name="cPassword" id="confirm-password" placeholder="Retype password" class="form-control">
 									<div id="error5" class="error-message"></div>
 								</div>
+								<%if(locals.message && message.length>0){%>
+									<div class="alert alert-danger text-center">
+									  <%=message%>
+									</div>
+									<%}%>	
 						</div>
 					</div>
 					<div class="user-bottom fix" style="display: flex; justify-content: space-between; align-items: center;">

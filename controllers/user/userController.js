@@ -4,7 +4,13 @@ const env = require("dotenv").config();
 const nodemailer = require("nodemailer");
 const bcrypt =  require("bcrypt");
 
-
+const pageNotFound = async (req,res) => {
+    try {
+        res.render("page-404")
+    }catch (error) {
+        res.redirect("/pageNotFound")
+    }
+}
 
 const loadHomepage = async (req,res) => {
     try{
@@ -13,7 +19,7 @@ const loadHomepage = async (req,res) => {
             const userData =  await User.findOne({_id:user._id});
             res.render("home",{user:userData});
         }else{
-            return res.render("home",);
+            return res.render("home");
         }
         
     }catch(error){
@@ -168,18 +174,62 @@ const resendOtp = async (req,res)=>{
 }
 
 
-const loadLogin = async (req,res)=>{
+const loadLogin = async (req, res) => {
     try {
-        if(!req.session.user){
-            return res.render("login")
-        }else{
-            res.redirect("/")
-        }      
+      if(!req.session.user){
+        const error = req.session.error_message || req.session.loginError;
+        req.session.error_message = '';
+        req.session.loginError = '';
+        
+        return res.render("login", { message: error });
+      } else {
+        res.redirect("/");
+      }
     } catch (error) {
+      res.redirect("/pageNotFound");
+    }
+  };
+
+
+const login = async (req,res)=>{
+    
+    try {
+        const {email,password} = req.body;
+        const findUser = await User.findOne({isAdmin:0,email:email});
+        if(!findUser){
+            req.session.loginError = "User not found";
+            return res.redirect("/login")
+        }
+        if(findUser.isBlocked){
+            return res.render("login",{message:"User is blocked by admin"})
+        }
+        const passwordMatch = await bcrypt.compare(password,findUser.password);
+        
+        if(!passwordMatch){
+            return res.render("login",{message:"Incorrect password"})
+        }
+        req.session.user = findUser;
+        res.redirect("/");
+    } catch (error) {
+        console.error("Login Error",error);
+        res.render("login",{message:"login failed. Please try again later"});
+    }
+};
+
+const logout =  async (req,res)=> {
+    try {
+        req.session.destroy((err)=>{
+            if(err){
+                console.log("Session destruction error",err.message);
+                return res.redirect("/pageNotFound");
+            }
+            return res.redirect("/login");
+        })        
+    } catch (error) {
+        console.log("Logout error",error);
         res.redirect("/pageNotFound")
     }
 }
-
 
 
 
@@ -191,4 +241,7 @@ const loadLogin = async (req,res)=>{
     verifyOtp,
     resendOtp,
     loadLogin,
+    pageNotFound,
+    login,
+    logout,
  };
