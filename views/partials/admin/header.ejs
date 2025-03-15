@@ -1,0 +1,227 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Abundora</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/16d4885483.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <style>
+        /* General Styling */
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Sidebar Styling */
+        .navbar-aside {
+            background: linear-gradient(135deg, #4e54c8, #8f94fb);
+            width: 240px;
+            min-height: 100vh;
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+            position: fixed;
+            left: 0;
+            top: 0;
+            transition: all 0.3s ease-in-out;
+            overflow: hidden;
+        }
+
+        .navbar-aside.collapsed {
+            width: 60px;
+            padding: 20px 5px;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            color: #fff;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        /* Sidebar Logo */
+        .brand-wrap {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .brand-wrap img {
+            width: 160px;
+            transition: width 0.3s;
+        }
+
+        .navbar-aside.collapsed .brand-wrap img {
+            width: 40px;
+        }
+
+        /* Sidebar Menu */
+        .menu-aside {
+            list-style: none;
+            padding: 0;
+            margin: 40px 0 0 0;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-radius: 8px;
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: 0.3s;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .navbar-aside.collapsed .menu-link span {
+            display: none; /* Hide text when collapsed */
+        }
+
+        .menu-link:hover,
+        .menu-link.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .menu-item i {
+            margin-right: 10px;
+            font-size: 20px;
+            width: 40px;
+            text-align: center;
+        }
+
+        .navbar-aside.collapsed .menu-item i {
+            margin-right: 0;
+            font-size: 24px;
+            width: 100%;
+        }
+
+        /* Header Styling */
+        .main-header {
+            background: #4e54c8;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            margin-left: 240px;
+            transition: margin-left 0.3s;
+        }
+
+        .navbar-aside.collapsed ~ .main-header {
+            margin-left: 60px;
+        }
+
+        .main-header .header-title {
+            color: #fff;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .main-header .nav-item img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        /* Content Area */
+        .main-wrap {
+            margin-left: 240px;
+            padding: 20px;
+            transition: margin-left 0.3s;
+        }
+
+        .navbar-aside.collapsed ~ .main-wrap {
+            margin-left: 60px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar-aside {
+                width: 100%;
+                height: auto;
+                position: absolute;
+            }
+
+            .navbar-aside.collapsed {
+                width: 0;
+                padding: 0;
+            }
+
+            .main-header, .main-wrap {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="navbar-aside">
+        <div class="hamburger" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="aside-top brand-wrap">
+            <a href="#" class="brand-wrap">
+                <img src="/img/logo/abundora_website-nobg.png" alt="Abundora Logo">
+            </a>
+        </div>
+        <nav>
+            <ul class="menu-aside">
+                <li class="menu-item"><a class="menu-link" href="/admin"><i class="fas fa-home"></i><span> Dashboard</span></a></li>
+                <li class="menu-item"><a class="menu-link" href="/admin/users"><i class="fas fa-user"></i><span> Customers</span></a></li>
+                <li class="menu-item"><a class="menu-link" href="/admin/category"><i class="fas fa-layer-group"></i><span> Category</span></a></li>
+                <li class="menu-item"><a class="menu-link" href="/admin/brands"><i class="fas fa-star"></i><span> Brands</span></a></li>
+                <li class="menu-item"><a class="menu-link" href="/admin/addProducts"><i class="fas fa-plus-square"></i><span> Add Product</span></a></li>
+                <li class="menu-item"><a class="menu-link" href="/admin/products"><i class="fas fa-shopping-bag"></i><span> Products</span></a></li>
+                <li class="menu-item"><a class="menu-link" href="/admin/coupon"><i class="fas fa-tags"></i><span> Coupon</span></a></li>
+                <li class="menu-item"><a class="menu-link" href="/admin/banner"><i class="fas fa-image"></i><span> Banner</span></a></li>
+                <li class="menu-item"><a class="menu-link" href="/admin/orderList"><i class="fas fa-shopping-cart"></i><span> Orders</span></a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <header class="main-header">
+        <div class="header-title">Welcome to Abundora Admin Panel...!</div>
+        <div class="col-nav">
+            <ul class="nav">
+                <li class="dropdown nav-item">
+                    <a class="dropdown-toggle" style="text-decoration: none;" data-bs-toggle="dropdown" href="#" id="dropdownAccount">
+                        <img class="img-xs rounded-circle" src="/img/logo/account.png" alt="User Avatar">
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-danger" href="/admin/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="main-wrap">
+        <h1>Dashboard</h1>
+    </main>
+
+    <script>
+        function toggleMenu() {
+            document.querySelector('.navbar-aside').classList.toggle('collapsed');
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
