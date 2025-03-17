@@ -1,0 +1,886 @@
+<%- include("../../views/partials/admin/header") %>
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+  <style>
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3f37c9;
+      --success-color: #2ec4b6;
+      --danger-color: #e63946;
+      --warning-color: #ff9f1c;
+      --info-color: #4cc9f0;
+      --light-bg: #f8f9fa;
+      --border-color: #e2e8f0;
+      --text-primary: #2d3748;
+      --text-secondary: #718096;
+      --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+      --transition: all 0.3s ease;
+    }
+
+    .content-main {
+      padding: 2rem;
+      background-color: var(--light-bg);
+      min-height: 100vh;
+    }
+
+    .category-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .content-title {
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 1.75rem;
+      margin: 0;
+      letter-spacing: -0.5px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      border: none;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+    }
+
+    .card:hover {
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-body {
+      padding: 1.75rem;
+    }
+
+    /* Form Styling */
+    .form-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+      height: 2.75rem;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      font-size: 0.875rem;
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+    }
+
+    /* Button Styling */
+    .btn {
+      padding: 0.625rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+    }
+
+    .btn-primary {
+      background: var(--primary-color);
+      border-color: var(--primary-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--secondary-color);
+      border-color: var(--secondary-color);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-success {
+      background-color: #10b981;
+      border-color: #10b981;
+      color: white;
+    }
+
+    .btn-success:hover {
+      background-color: #059669;
+      border-color: #059669;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
+    }
+
+    .btn-danger {
+      background-color: #ef4444;
+      border-color: #ef4444;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background-color: #dc2626;
+      border-color: #dc2626;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px rgba(239, 68, 68, 0.2);
+    }
+
+    /* Table Styling */
+    .table-responsive {
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .table {
+      margin: 0;
+    }
+
+    .table thead th {
+      background-color: var(--light-bg);
+      border-bottom: 2px solid var(--border-color);
+      color: var(--text-secondary);
+      font-weight: 600;
+      padding: 1rem 1.5rem;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .table tbody td {
+      padding: 1rem 1.5rem;
+      vertical-align: middle;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.95rem;
+    }
+
+    .table-hover tbody tr:hover {
+      background-color: rgba(67, 97, 238, 0.02);
+    }
+
+    /* Modal Styling */
+    .modal-content {
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .modal-header {
+      border-bottom: 1px solid var(--border-color);
+      padding: 1.5rem;
+    }
+
+    .modal-title {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+    }
+
+    .modal-footer {
+      border-top: 1px solid var(--border-color);
+      padding: 1.25rem 1.5rem;
+    }
+
+    /* Search Styling */
+    .search-container {
+      margin: 1.5rem 0;
+      padding: 1.5rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+    }
+
+    .search-box {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .search-input {
+      height: 3rem;
+      border-radius: 1.5rem;
+      padding: 0 1.5rem 0 3rem;
+      border: 2px solid var(--border-color);
+      transition: var(--transition);
+      font-size: 0.95rem;
+      width: 100%;
+      color: var(--text-primary);
+    }
+
+    .search-input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+      z-index: 1;
+    }
+
+    .search-buttons {
+      position: absolute;
+      right: 0.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .search-button, .clear-button {
+      border-radius: 1.25rem;
+      padding: 0.5rem 1.25rem;
+      color: white;
+      border: none;
+      transition: var(--transition);
+      font-weight: 500;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      height: 2.25rem;
+    }
+
+    .search-button {
+      background: var(--primary-color);
+    }
+
+    .clear-button {
+      background: var(--danger-color);
+    }
+
+    .search-button:hover, .clear-button:hover {
+      transform: translateY(-1px);
+      filter: brightness(110%);
+    }
+
+    /* Pagination */
+    .pagination {
+      margin-top: 2rem;
+      gap: 0.25rem;
+    }
+
+    .page-link {
+      border-radius: 8px;
+      padding: 0.625rem 1rem;
+      color: var(--primary-color);
+      border: 1px solid var(--border-color);
+      font-weight: 500;
+      min-width: 2.5rem;
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .page-item.active .page-link {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+
+    .page-link:hover:not(.active) {
+      background-color: var(--light-bg);
+      color: var(--primary-color);
+    }
+
+    /* No Results State */
+    .no-results {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: var(--card-shadow);
+    }
+
+    .no-results i {
+      font-size: 3rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    .no-results h3 {
+      color: var(--text-primary);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .no-results p {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .content-main {
+        padding: 1rem;
+      }
+
+      .card-body {
+        padding: 1.25rem;
+      }
+
+      .search-container {
+        padding: 1rem;
+      }
+
+      .search-box {
+        max-width: 100%;
+      }
+
+      .table thead {
+        display: none;
+      }
+
+      .table tbody td {
+        display: block;
+        padding: 0.75rem 1rem;
+        text-align: right;
+      }
+
+      .table tbody td::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: 600;
+        color: var(--text-secondary);
+      }
+
+      .table tbody tr {
+        display: block;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .category-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+
+    /* Error Message */
+    .error-message {
+      color: var(--danger-color);
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+    }
+
+    /* Status Badge and Button Colors */
+    .badge.rounded-pill {
+      padding: 0.5rem 1rem;
+      font-weight: 500;
+      font-size: 0.875rem;
+    }
+
+    .badge.alert-success {
+      background-color: #10b981;
+      color: white;
+    }
+
+    .badge.alert-danger {
+      background-color: #ef4444;
+      color: white;
+    }
+
+    /* Sweet Alert Customization */
+    .swal2-popup {
+      border-radius: 12px;
+      padding: 2rem;
+      background: white !important;
+    }
+
+    .swal2-title {
+      color: #1f2937 !important;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .swal2-html-container {
+      color: #4b5563 !important;
+    }
+
+    /* Sweet Alert Input Styling */
+    .swal2-input {
+      height: 2.75rem !important;
+      padding: 0.5rem 1rem !important;
+      border-radius: 8px !important;
+      border: 1px solid #e2e8f0 !important;
+      font-size: 0.875rem !important;
+      color: #1f2937 !important;
+      background-color: white !important;
+      box-shadow: none !important;
+      margin: 1rem 0 !important;
+    }
+
+    .swal2-input:focus {
+      border-color: #4361ee !important;
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1) !important;
+      outline: none !important;
+    }
+
+    .swal2-input::placeholder {
+      color: #9ca3af !important;
+    }
+
+    .swal2-confirm {
+      background-color: #10b981 !important;
+      color: white !important;
+      border-radius: 8px !important;
+      padding: 0.625rem 1.5rem !important;
+      font-weight: 500 !important;
+    }
+
+    .swal2-cancel {
+      background-color: #ef4444 !important;
+      color: white !important;
+      border-radius: 8px !important;
+      padding: 0.625rem 1.5rem !important;
+      font-weight: 500 !important;
+    }
+
+    .swal2-icon.swal2-warning {
+      border-color: #f59e0b !important;
+      color: #f59e0b !important;
+    }
+
+    .swal2-icon.swal2-error {
+      border-color: #ef4444 !important;
+      color: #ef4444 !important;
+    }
+
+    .swal2-icon.swal2-success {
+      border-color: #10b981 !important;
+      color: #10b981 !important;
+    }
+
+    .swal2-icon.swal2-info {
+      border-color: #3b82f6 !important;
+      color: #3b82f6 !important;
+    }
+
+    .swal2-validation-message {
+      background: #f3f4f6 !important;
+      color: #ef4444 !important;
+      padding: 0.75rem !important;
+      font-size: 0.875rem !important;
+      border-radius: 6px !important;
+      margin-top: 0.5rem !important;
+    }
+  </style>
+</head>
+<body>
+  <section class="content-main">
+    <div class="content-header">
+      <div class="category-header">
+        <h2 class="content-title card-title">Category</h2>
+        <button type="button" class="btn btn-primary create-btn" data-bs-toggle="modal" data-bs-target="#categoryModal">
+          <i class="fas fa-plus"></i> Create Category
+        </button>
+      </div>
+    </div>
+
+    <div class="search-container">
+      <form action="/admin/category" method="get" class="d-flex justify-content-center">
+        <div class="search-box">
+          <i class="fas fa-search search-icon"></i>
+          <input 
+            type="text" 
+            class="form-control search-input" 
+            placeholder="Search categories by name or description..." 
+            name="search" 
+            value="<%= typeof searchTerm !== 'undefined' ? searchTerm : '' %>"
+            autocomplete="off"
+          >
+          <div class="search-buttons">
+            <% if (typeof searchTerm !== 'undefined' && searchTerm !== '') { %>
+              <a href="/admin/category" class="clear-button">
+                <i class="fas fa-times"></i> Clear
+              </a>
+            <% } %>
+            <button class="search-button" type="submit">
+              Search
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="categoryModalLabel">Create Category</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form method="post" action="/admin/addCategory" id="categoryForm" onsubmit="handleFormSubmit(event)" novalidate>
+              <div class="mb-4">
+                <label for="product_name" class="form-label">Name</label>
+                <input type="text" name="name" placeholder="Type here" class="form-control" id="product_name" required />
+                <div id="name-error" class="error-message"></div>
+              </div>
+              <div class="mb-4">
+                <label class="form-label">Description</label>
+                <textarea placeholder="Type here" name="description" class="form-control" id="descriptionId" required></textarea>
+                <div id="description-error" class="error-message"></div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Create Category</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Side: List or Table -->
+    <div class="col-md-12">
+      <div class="card p-4" style="margin-left: 250px; margin-top: 30px; max-width:83%;">
+        <div class="table-responsive">
+          <% if (cat && cat.length > 0) { %>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th class="text-center">SI.No</th>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Offer Price</th>
+                  <th>Offer</th>
+                  <th>Status</th>
+                  <th>List/Unlist</th>
+                  <th class="text-start">Edit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% cat.forEach((category, index) => { %>
+                <tr>
+                  <td class="text-center"><%= (currentPage - 1) * 4 + index + 1 %></td>
+                  <td class="text-start"><%= category.name %></td>
+                  <td class="text-start"><%= category.description %></td>
+                  <td>
+                    <% if (category.categoryOffer) { %>
+                    <%= category.categoryOffer %>%
+                    <% } else { %> 0% <% } %>
+                  </td>
+                  <td>
+                    <% if (!category.categoryOffer) { %>
+                    <button class="btn btn-info" style="width: 100px" onclick="addOffer('<%=category._id%>')">
+                      <a href="#" class="text-white">Add Offer</a>
+                    </button>
+                    <% } else { %>
+                    <button class="btn btn-info" style="width: 100px" onclick="removeOffer('<%=category._id%>')">
+                      <a href="#" class="text-white">Remove</a>
+                    </button>
+                    <% } %>
+                  </td>
+
+                  <td class="text-start">
+                    <% if (category.isListed) { %>
+                    <span class="badge rounded-pill alert-success" style="width: 80px">Listed</span>
+                    <% } else { %>
+                    <span class="badge rounded-pill alert-danger" style="width: 80px">Unlisted</span>
+                    <% } %>
+                  </td>
+                  <td class="text-start">
+                    <% if (category.isListed) { %>
+                    <button class="btn btn-danger" style="width: 70px" onclick="handleListStatus('<%=category._id%>', false)">
+                      Unlist
+                    </button>
+                    <% } else { %>
+                    <button class="btn btn-success" style="width: 70px" onclick="handleListStatus('<%=category._id%>', true)">
+                      List
+                    </button>
+                    <% } %>
+                  </td>
+                  <td class="text-start">
+                    <a href="/admin/editCategory?id=<%=category._id%>" class="btn btn-info text-white">Edit</a>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          <% } else { %>
+            <div class="no-results">
+              <div class="text-center py-5">
+                <i class="fas fa-search mb-3" style="font-size: 3rem; color: #ccc;"></i>
+                <h4 class="text-muted">No Categories Found</h4>
+                <% if (typeof searchTerm !== 'undefined' && searchTerm !== '') { %>
+                  <p class="text-muted">No categories match your search "<%= searchTerm %>"</p>
+                  <a href="/admin/category" class="btn btn-outline-primary mt-2">
+                    <i class="fas fa-undo"></i> View All Categories
+                  </a>
+                <% } else { %>
+                  <p class="text-muted">No categories have been added yet</p>
+                  <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#categoryModal">
+                    <i class="fas fa-plus"></i> Add Category
+                  </button>
+                <% } %>
+              </div>
+            </div>
+          <% } %>
+        </div>
+
+        <!-- Pagination -->
+        <div class="container mt-3">
+          <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+              <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+                <a class="page-link" href="?page=<%= currentPage - 1 %>&search=<%= typeof searchTerm !== 'undefined' ? searchTerm : '' %>" <%= currentPage === 1 ? 'tabindex="-1" aria-disabled="true"' : '' %>>&lt;</a>
+              </li>
+              <li class="page-item active">
+                <span class="page-link"><%= currentPage %> out of <%= totalPages %></span>
+              </li>
+              <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+                <a class="page-link" href="?page=<%= currentPage + 1 %>&search=<%= typeof searchTerm !== 'undefined' ? searchTerm : '' %>" <%= currentPage === totalPages ? 'tabindex="-1" aria-disabled="true"' : '' %>>&gt;</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+  <script>
+    function handleFormSubmit(event) {
+      event.preventDefault();
+      if (!validateForm()) {
+        return;
+      }
+
+      const name = document.getElementsByName("name")[0].value.trim();
+      const description = document.getElementById("descriptionId").value.trim();
+
+      fetch("/admin/addCategory", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name, description })
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data) {
+            Swal.fire({
+              icon: "success",
+              title: "Category Added",
+              text: "The category has been added successfully!",
+              confirmButtonText: "OK"
+            }).then(() => {
+              location.reload();
+            });
+          } else {
+            throw new Error(data.error || "An error occurred while adding the category");
+          }
+        })
+        .catch(error => {
+          Swal.fire({
+            icon: "error",
+            title: "Oops!",
+            text: 'Category already exists'
+          });
+        });
+    }
+
+    function validateForm() {
+      clearErrorMessage();
+      const name = document.getElementsByName("name")[0].value.trim();
+      const description = document.getElementById("descriptionId").value.trim();
+      let isValid = true;
+
+      if (name === "") {
+        displayErrorMessage("name-error", "Please enter a name");
+        isValid = false;
+      } else if (!/^[a-zA-Z0-9\s]+$/.test(name)) {
+        displayErrorMessage("name-error", "Category name should contain only alphanumeric characters");
+        isValid = false;
+      }
+
+      if (description === "") {
+        displayErrorMessage("description-error", "Please enter a description");
+        isValid = false;
+      }
+
+      return isValid;
+    }
+
+    function displayErrorMessage(elementId, message) {
+      const errorElement = document.getElementById(elementId);
+      if (errorElement) {
+        errorElement.innerHTML = message;
+        errorElement.style.display = "block";
+      }
+    }
+
+    function clearErrorMessage() {
+      const errorElements = document.getElementsByClassName("error-message");
+      Array.from(errorElements).forEach(element => {
+        element.innerText = "";
+        element.style.display = "none";
+      });
+    }
+
+    async function addOffer(categoryId) {
+      try {
+        const { value: amount } = await Swal.fire({
+          title: 'Offer in Percentage',
+          input: 'number',
+          inputLabel: 'Percentage',
+          inputPlaceholder: 'Enter the offer percentage',
+          showCancelButton: true,
+          confirmButtonText: 'Add Offer',
+          cancelButtonText: 'Cancel',
+          inputValidator: (value) => {
+            if (!value || isNaN(value) || value <= 0 || value > 100) {
+              return 'Please enter a valid percentage (1-100).';
+            }
+          }
+        });
+
+        if (amount) {
+          $.ajax({
+            url: "/admin/addCategoryOffer",
+            method: 'POST',
+            data: {
+              percentage: amount,
+              categoryId: categoryId
+            },
+            success: (response) => {
+              if (response.status === true) {
+                Swal.fire('Offer Added', 'The offer has been successfully added!', 'success')
+                  .then(() => location.reload());
+              } else {
+                Swal.fire('Failed', 'Unable to add the offer. Please try again.', 'error');
+              }
+            },
+            error: (error) => {
+              console.error('Error:', error);
+              Swal.fire('Error', 'An unexpected error occurred.', 'error');
+            }
+          });
+        }
+      } catch (error) {
+        console.error('Error in addOffer:', error);
+      }
+    }
+
+    async function removeOffer(categoryId) {
+      const confirm = await Swal.fire({
+        title: "Remove Offer",
+        text: "Are you sure you want to remove the offer from this category?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Remove",
+        cancelButtonText: "Cancel",
+      });
+
+      if (confirm.isConfirmed) {
+        try {
+          Swal.fire({
+            title: "Removing Offer...",
+            text: "Please wait while the offer is being removed",
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            },
+          });
+
+          const response = await fetch("/admin/removeCategoryOffer", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              categoryId: categoryId,
+            }),
+          });
+
+          const data = await response.json();
+
+          Swal.close();
+
+          if (response.ok && data.status === true) {
+            Swal.fire("Offer Removed", "The offer has been successfully removed", "success").then(() => {
+              location.reload();
+            });
+          } else {
+            Swal.fire("Failed", data.message || "Removing offer failed", "error");
+          }
+        } catch (error) {
+          Swal.fire(
+            "Error",
+            "An error occurred while removing the offer. Please try again.",
+            "error"
+          );
+          console.error("Error removing offer:", error);
+        }
+      }
+    }
+    
+    async function handleListStatus(categoryId, listStatus) {
+        const action = listStatus ? 'list' : 'unlist';
+        const result = await Swal.fire({
+            title: `${action.charAt(0).toUpperCase() + action.slice(1)} Category`,
+            text: `Are you sure you want to ${action} this category?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: listStatus ? '#28a745' : '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: `Yes, ${action} it!`,
+            cancelButtonText: 'Cancel'  
+        });
+
+        if (result.isConfirmed) {
+            try {
+                const url = listStatus ? '/admin/unListCategory' : '/admin/listCategory';
+                const response = await fetch(`${url}?id=${categoryId}`);
+                
+                if (response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: `Category has been ${action}ed successfully!`,
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        location.reload();
+                    });
+                } else {
+                    throw new Error('Failed to update category status');
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to update category status. Please try again.',
+                    confirmButtonText: 'OK'
+                });
+            }
+        }
+    }
+  </script>
+</body>
+
+<%- include("../../views/partials/admin/footer") %>
