@@ -580,31 +580,36 @@
                   </td>
                   <td>
                     <% if (!category.categoryOffer) { %>
-                    <button class="btn btn-info" style="width: 100px" onclick="addOffer('<%=category._id%>')">
-                      <a href="#" class="text-white">Add Offer</a>
+                    <button class="btn btn-info" style="width: 103px" onclick="addOffer('<%=category._id%>')">
+                      <a href="#" style="text-decoration: none;" class="text-white">Add Offer</a>
                     </button>
                     <% } else { %>
-                    <button class="btn btn-info" style="width: 100px" onclick="removeOffer('<%=category._id%>')">
-                      <a href="#" class="text-white">Remove</a>
+                    <button class="btn btn-info" style="width: 103px" onclick="removeOffer('<%=category._id%>')">
+                      <a href="#" style="text-decoration: none;" class="text-white">Remove</a>
                     </button>
                     <% } %>
                   </td>
 
-                  <td class="text-start">
+                   <td class="text-start">
                     <% if (category.isListed) { %>
-                    <span class="badge rounded-pill alert-success" style="width: 80px">Listed</span>
+                      <!-- <span class="badge rounded-pill alert-success" style="width: 80px">Listed</span> -->
+                      <span class="badge rounded-pill" style="width: 80px; background-color: #d4edda; color: #1c7b31;"><strong>Listed</strong></span>
                     <% } else { %>
-                    <span class="badge rounded-pill alert-danger" style="width: 80px">Unlisted</span>
+                      <!-- <span class="badge rounded-pill alert-danger" style="width: 80px">Unlisted</span> -->
+                      <span class="badge rounded-pill" style="width: 80px; background-color: #f8d7da; color: #af2633;"><strong>Unlisted</strong></span>
                     <% } %>
                   </td>
+                
                   <td class="text-start">
                     <% if (category.isListed) { %>
-                    <button class="btn btn-danger" style="width: 70px" onclick="handleListStatus('<%=category._id%>', false)">
-                      Unlist
+                    <!-- <button class="btn btn-danger" style="width: 70px" onclick="handleListStatus('<%=category._id%>', false)"> -->
+                      <button class="btn btn-danger" style="width: 70px">
+                    <a class="text-white" style="text-decoration: none;" href="/admin/listCategory?id=<%=category._id%>">Unlist</a>  
                     </button>
                     <% } else { %>
-                    <button class="btn btn-success" style="width: 70px" onclick="handleListStatus('<%=category._id%>', true)">
-                      List
+                      <!-- <button class="btn btn-success" style="width: 70px" onclick="handleListStatus('<%=category._id%>', true)"> -->
+                    <button class="btn btn-success" style="width: 70px">
+                      <a class="text-white" style="text-decoration: none;" href="/admin/unlistCategory?id=<%=category._id%>">List</a>  
                     </button>
                     <% } %>
                   </td>

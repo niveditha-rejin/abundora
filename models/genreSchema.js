@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 const {Schema} = mongoose;
 
-const brandSchema = new Schema({
-    brandName : {
+const genreSchema = new Schema({
+    genreName : {
         type : String,
         required : true
     },
-    brandImage : {
+    genreImage : {
         type : [String],
         required : true
     },
@@ -20,5 +20,5 @@ const brandSchema = new Schema({
     }
 })
 
-const Brand = mongoose.model("Brand",brandSchema);
-module.exports = Brand;
+const Genre = mongoose.model("Genre",genreSchema);
+module.exports = Genre;
