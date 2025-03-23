@@ -33,6 +33,10 @@ router.get("/editCategory",adminAuth,categoryController.getEditcategory);
 router.post("/editCategory/:id",adminAuth,categoryController.editCategory);
 //genre management
 router.get("/genre",adminAuth,genreController.getGenrePage);
+router.post("/addGenre",adminAuth,uploads.single("image"),genreController.addGenre);
+router.get("/blockGenre",adminAuth,genreController.blockGenre);
+router.get("/unBlockGenre",adminAuth,genreController.unBlockGenre);
+router.get("/deleteGenre",adminAuth,genreController.deleteGenre);
 //product management
 // router.get("/addProducts",adminAuth,productController.getProductAddPage);
 
